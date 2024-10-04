@@ -1,10 +1,4 @@
-from pyspark.sql.dataframe import DataFrame
-
-from lib import remove_nested_node_from_df
-
-
-def get_curent_node_from_df(df: DataFrame) -> DataFrame:
-    pass
+from lib import remove_nested_node_from_df, get_curent_node_df
 
 
 def test_remove_nested_node_from_df(spark, src_dir):
@@ -34,9 +28,11 @@ def test_get_current_node_df(spark, src_dir):
         .option("valueTag", True) \
         .load(str(src_file_path))
 
+    df = remove_nested_node_from_df(df)
+
 
     # WHEN
-    # result_df = get_curent_node_from_df(df)
+    result_df = get_curent_node_df(df)
 
 
     # THEN
@@ -44,4 +40,17 @@ def test_get_current_node_df(spark, src_dir):
     expected_df = spark.read.csv(str(output_csv), header=True, inferSchema=True, sep="\t")
 
     # assert result_df.collect() == expected_df.collect()
-    assert True
+    # compare RequId column values
+    assert result_df.select("RequId").collect() == expected_df.select("RequId").collect()
+
+    # compare TransactionRequestDt column values
+    assert result_df.select("TransactionRequestDt").collect() == expected_df.select("TransactionRequestDt").collect()
+
+    # compare TransactionRequestDt_id column values
+    assert result_df.select("TransactionRequestDt_id").collect() == expected_df.select("TransactionRequestDt_id").collect()
+
+    # compare TransactionEffectiveDt column values
+    assert result_df.select("TransactionEffectiveDt").collect() == expected_df.select("TransactionEffectiveDt").collect()
+
+    # compare TransactionEffectiveDt_id column values
+    assert result_df.select("TransactionEffectiveDt_id").collect() == expected_df.select("TransactionEffectiveDt_id").collect()
