@@ -17,7 +17,7 @@ def test_add_row_hash_to_df(spark, src_dir):
 
 
     # WHEN
-    result_df = add_row_hash_to_df(df, src_xml, node_name)
+    result_df, _ = add_row_hash_to_df(df, src_xml, node_name)
 
     actual_row_hash = result_df.select("PK_PersAutoPolicyModRq").collect()[0][0]
 

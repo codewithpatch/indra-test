@@ -76,7 +76,7 @@ def test_get_df_for_child_pipeline(spark, src_dir):
     # WHEN
     df = get_curent_node_df(df, node_name)
     df, _ = remove_nested_node_from_df(df)
-    df = add_row_hash_to_df(df, src_xml, node_name)
+    df, _ = add_row_hash_to_df(df, src_xml, node_name)
     print(df.show())
 
     assert "Producer_id" in df.columns
