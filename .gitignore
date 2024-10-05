@@ -4,3 +4,5 @@ archive/
 .bsp/
 project/
 target/
+output/
+test_output/
