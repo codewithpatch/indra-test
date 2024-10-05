@@ -10,6 +10,11 @@ def src_dir() -> Path:
 
 
 @pytest.fixture(scope='session')
+def output_dir() -> Path:
+    return Path('../test_output')
+
+
+@pytest.fixture(scope='session')
 def spark() -> SparkSession:
     return SparkSession \
         .builder \
