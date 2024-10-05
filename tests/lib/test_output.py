@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib import remove_nested_node_from_df, get_curent_node_df
+from lib.reader import remove_nested_node_from_df, get_curent_node_df
 from lib.output import write_df_to_csv
 
 
