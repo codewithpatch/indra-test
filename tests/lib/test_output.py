@@ -14,7 +14,7 @@ def test_write_df_to_csv(spark, src_dir: Path, output_dir: Path):
         .load(str(src_file_path))
 
     # WHEN
-    df = remove_nested_node_from_df(df)
+    df, _ = remove_nested_node_from_df(df)
     df = get_curent_node_df(df)
 
     output_csv = write_df_to_csv(df, output_dir, node_name)

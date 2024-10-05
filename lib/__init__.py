@@ -9,16 +9,17 @@ def has_nested_node(dtype: str) -> bool:
     return struct_count > 1
 
 
-def remove_nested_node_from_df(df: DataFrame) -> DataFrame:
+def remove_nested_node_from_df(df: DataFrame) -> tuple[DataFrame, DataFrame]:
     column_with_nested_node = []
     for column, dtype in df.dtypes:
 
         if has_nested_node(dtype):
             column_with_nested_node.append(column)
 
-    df = df.drop(*column_with_nested_node)
+    nested_node_df = df.select(*column_with_nested_node)
+    no_nested_node_df = df.drop(*column_with_nested_node)
 
-    return df
+    return no_nested_node_df, nested_node_df
 
 
 def generate_column_to_select(df: DataFrame) -> list:

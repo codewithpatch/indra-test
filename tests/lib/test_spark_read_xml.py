@@ -12,7 +12,7 @@ def test_remove_nested_node_from_df(spark, src_dir):
 
 
     # WHEN
-    result_df = remove_nested_node_from_df(df)
+    result_df, _ = remove_nested_node_from_df(df)
 
 
     # THEN
@@ -28,7 +28,7 @@ def test_get_current_node_df(spark, src_dir):
         .option("valueTag", True) \
         .load(str(src_file_path))
 
-    df = remove_nested_node_from_df(df)
+    df, _ = remove_nested_node_from_df(df)
 
 
     # WHEN

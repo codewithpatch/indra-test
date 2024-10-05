@@ -4,14 +4,17 @@ import pytest
 from pyspark.sql import SparkSession
 
 
+test_dir = Path(__file__).parent.parent
+
+
 @pytest.fixture(scope='session')
 def src_dir() -> Path:
-    return Path('../test_file')
+    return test_dir / "test_file"
 
 
 @pytest.fixture(scope='session')
 def output_dir() -> Path:
-    return Path('../test_output')
+    return test_dir / "test_output"
 
 
 @pytest.fixture(scope='session')
