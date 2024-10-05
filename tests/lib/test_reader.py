@@ -1,7 +1,7 @@
 from lib.reader import remove_nested_node_from_df, get_curent_node_df
 import xml.etree.ElementTree as ET
 
-from lib.hash import add_row_hash_to_df
+from lib.chash import add_row_hash_to_df
 
 
 def test_remove_nested_node_from_df(spark, src_dir):

@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 
-from lib.hash import add_row_hash_to_df
+from lib.chash import add_row_hash_to_df
 
 
 def test_add_row_hash_to_df(spark, src_dir):
