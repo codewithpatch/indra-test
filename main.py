@@ -60,15 +60,16 @@ def run_process(child_node_df: DataFrame, xml: ET.ElementTree):
 
 if __name__ == "__main__":
 
-    source_file = "xml_sample.xml"
-    source_file_path = SRC_DIR / source_file
+    # get lists of files from the source directory
+    source_files = [f for f in SRC_DIR.iterdir() if f.is_file() and f.suffix == ".xml"]
 
-    # Read the XML file
-    xml = ET.parse(str(source_file_path))
-    top_level_node = xml.getroot()
+    for source_file in source_files:
+        # Read the XML file
+        xml = ET.parse(str(source_file))
+        top_level_node = xml.getroot()
 
-    # Read the XML file into a DataFrame
-    df = read_xml_to_df(source_file_path, top_level_node.tag)
+        # Read the XML file into a DataFrame
+        df = read_xml_to_df(source_file, top_level_node.tag)
 
-    run_process(df, xml)
+        run_process(df, xml)
 
