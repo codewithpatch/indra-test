@@ -7,7 +7,7 @@ from lib.output import write_df_to_csv
 def test_write_df_to_csv(spark, src_dir: Path, output_dir: Path):
     # GIVEN
     node_name = "PersAutoPolicyModRq"
-    src_file_path = src_dir / "xml_sample.xml"
+    src_file_path = src_dir / "xml_original_test_file.xml"
     df = spark.read.format("com.databricks.spark.xml") \
         .option("rowTag", node_name) \
         .option("valueTag", True) \

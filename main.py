@@ -20,7 +20,7 @@ spark = SparkSession \
 # print()
 
 SRC = Path("SRC")
-source_file = "xml_sample.xml"
+source_file = "xml_original_test_file.xml"
 source_file_path = SRC / source_file
 
 # Read the XML file into a DataFrame

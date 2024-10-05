@@ -1,10 +1,13 @@
 from lib import remove_nested_node_from_df, get_curent_node_df
+import xml.etree.ElementTree as ET
+
+from lib.hash import add_row_hash_to_df
 
 
 def test_remove_nested_node_from_df(spark, src_dir):
     # GIVEN
     node_name = "PersAutoPolicyModRq"
-    src_file_path = src_dir / "xml_sample.xml"
+    src_file_path = src_dir / "xml_original_test_file.xml"
     df = spark.read.format("com.databricks.spark.xml") \
         .option("rowTag", node_name) \
         .option("valueTag", True) \
@@ -22,7 +25,7 @@ def test_remove_nested_node_from_df(spark, src_dir):
 def test_get_current_node_df(spark, src_dir):
     # GIVEN
     node_name = "PersAutoPolicyModRq"
-    src_file_path = src_dir / "xml_sample.xml"
+    src_file_path = src_dir / "xml_original_test_file.xml"
     df = spark.read.format("com.databricks.spark.xml") \
         .option("rowTag", node_name) \
         .option("valueTag", True) \
@@ -54,3 +57,27 @@ def test_get_current_node_df(spark, src_dir):
 
     # compare TransactionEffectiveDt_id column values
     assert result_df.select("TransactionEffectiveDt_id").collect() == expected_df.select("TransactionEffectiveDt_id").collect()
+
+
+def test_get_df_for_child_pipeline(spark, src_dir):
+    # GIVEN
+    src_file_path = src_dir / "xml_original_test_file.xml"
+
+    src_xml = ET.parse(src_file_path)
+
+    node_name = "Producer"
+    src_file_path = src_dir / "xml_original_test_file.xml"
+    df = spark.read.format("com.databricks.spark.xml") \
+        .option("rowTag", node_name) \
+        .option("valueTag", True) \
+        .load(str(src_file_path))
+
+
+    # WHEN
+    df = get_curent_node_df(df, node_name)
+    df, _ = remove_nested_node_from_df(df)
+    df = add_row_hash_to_df(df, src_xml, node_name)
+    print(df.show())
+
+    assert "Producer_id" in df.columns
+    assert "PK_Producer" in df.columns

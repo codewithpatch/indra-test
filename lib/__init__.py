@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 from pyspark.sql import DataFrame
 
@@ -22,18 +23,21 @@ def remove_nested_node_from_df(df: DataFrame) -> tuple[DataFrame, DataFrame]:
     return no_nested_node_df, nested_node_df
 
 
-def generate_column_to_select(df: DataFrame) -> list:
+def generate_column_to_select(df: DataFrame, node_name: Optional[str] = None) -> list:
     column_to_select = []
 
     for column, dtype in df.dtypes:
         if "struct" not in dtype:
             column_name = column
-            alias_name = column
+            alias_name = column if node_name is None else f"{node_name}{column}"
 
             column_to_select.append(
                 (column_name, alias_name)
             )
 
+            continue
+
+        if has_nested_node(dtype):
             continue
 
         column_name = f"{column}.true"
@@ -50,8 +54,8 @@ def generate_column_to_select(df: DataFrame) -> list:
     return column_to_select
 
 
-def get_curent_node_df(df: DataFrame) -> DataFrame:
-    column_to_select = generate_column_to_select(df)
+def get_curent_node_df(df: DataFrame, node_name: Optional[str] = None) -> DataFrame:
+    column_to_select = generate_column_to_select(df, node_name)
 
     df = df.selectExpr(
         [f"{column_name} as {alias_name}" for column_name, alias_name in column_to_select]

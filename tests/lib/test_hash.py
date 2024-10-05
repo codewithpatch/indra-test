@@ -6,7 +6,7 @@ from lib.hash import add_row_hash_to_df
 def test_add_row_hash_to_df(spark, src_dir):
     # GIVEN
     node_name = "PersAutoPolicyModRq"
-    src_file_path = src_dir / "xml_sample.xml"
+    src_file_path = src_dir / "xml_original_test_file.xml"
 
     src_xml = ET.parse(src_file_path)
 
